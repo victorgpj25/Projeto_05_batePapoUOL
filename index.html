@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bate Papo UOL</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="css/reset.css">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div class="login-screen">
+        <img src="image/logo.png" alt="">
+        <input type="text" placeholder="Digite seu nome" class="my-username">
+        <button onclick="login()">Entrar</button>
+    </div>
+    <div class="participants-background displayNone" onclick="displayParticipants()"></div>
+    <section class="displayNone">
+        <p>Escolha um contato para enviar mensagem:</p>
+        <ul class="participants-list">
+            <li>
+                <ion-icon name="people"></ion-icon>
+                <p>Todos</p>
+            </li>
+        </ul>
+        <p>Escolha a visibilidade:</p>
+        <ul class="visibility-list">
+            <li>
+                <ion-icon name="lock-open"></ion-icon>
+                <p>Público</p>
+            </li>
+            <li>
+                <ion-icon name="lock-closed"></ion-icon>
+                <p>Reservadamente</p>
+            </li>
+        </ul>
+    </section>
+    <header>
+        <img src="image/logo.png" alt="" onclick="reload()">
+        <ion-icon name="people" onclick="displayParticipants()"></ion-icon>
+    </header>
+    <main><ol></ol></main>
+    <footer>
+        <div class="input-box">
+            <input type="text" placeholder="Escreva aqui...">
+            <p>Enviando para Maria (reservadamente)</p>
+        </div>
+        <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>
+    </footer>
+    
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://unpkg.com/ionicons@5.4.0/dist/ionicons.js"></script>
+    <script src="scripts/script.js"></script>
+</body>
+</html>
