@@ -14,6 +14,8 @@ function login () {
         setInterval(myStatus, 5000)
         loadMessages()
         setInterval(loadMessages, 3000)
+        loadParticipants()
+        setInterval(loadParticipants, 10000)
     }
     function loginFail (requestStatus) {
         const statusCode = requestStatus.response.status
@@ -25,9 +27,33 @@ function login () {
 function reload() {
     window.location.reload()
 }
-function displayParticipants() {
-    document.querySelector(".participants-background").classList.toggle("displayNone")
-    document.querySelector("section").classList.toggle("displayNone")
+function displayParticipantsSection() {
+    document.querySelector(".participants-background").classList.remove("displayNone")
+    document.querySelector("section").classList.remove("displayNone")
+    window.participantsInterval = setInterval(loadParticipants, 10000)
+}
+function notDisplayParticipantsSection() {
+    document.querySelector(".participants-background").classList.add("displayNone")
+    document.querySelector("section").classList.add("displayNone")
+    clearInterval(participantsInterval)
+}
+function loadParticipants () {
+    let promise = axios.get('https://mock-api.driven.com.br/api/v6/uol/participants')
+
+    promise.then(receiveParticipants)
+
+    function receiveParticipants (participants) {
+        document.querySelector(".participants-list").innerHTML = `<li class="selected" onclick="selectReceiver(this)"><ion-icon name="people"></ion-icon><p>Todos</p><ion-icon name="checkmark" class="check"></ion-icon></li>`
+        for (let i = 0; i < participants.data.length; i++) {
+        displayParticipants(participants.data[i])
+        }
+
+        function displayParticipants (participant) {
+            const participantBox = document.querySelector(".participants-list")
+            participantBox.innerHTML += `<li onclick="selectReceiver(this)"><ion-icon name="person-circle"></ion-icon><p>${participant.name}</p></li>`
+        }
+
+    }
 }
 function loadMessages() {
     
@@ -36,7 +62,9 @@ function loadMessages() {
     promise.then(receiveMessages)
 
     function receiveMessages (messages) {
-        if (document.querySelector("ol").innerHTML.includes(messages.data[messages.data.length - 1].time) )
+        if (document.querySelector("ol").innerHTML.includes(messages.data[messages.data.length - 1].time) ) {
+
+        } else {
             document.querySelector("ol").innerHTML = ""
             for (let i = 0; i < messages.data.length; i++) {
                 displayMessages(messages.data[i])
@@ -54,8 +82,28 @@ function loadMessages() {
                 var lastMessage = document.querySelector("ol").lastChild
                 document.querySelector("ol").lastChild.scrollIntoView();
             }
+        }
     }
 }
 function sendMessage() {
-
+}
+function selectReceiver (receiver) {
+    let alreadySelected = document.querySelector(".participants-list .selected")
+    if (receiver !== alreadySelected) {
+        alreadySelected.classList.remove("selected")
+        alreadySelected.removeChild(alreadySelected.children[2])
+        receiver.classList.add("selected")
+        receiver.innerHTML += '<ion-icon name="checkmark" class="check"></ion-icon>'
+        document.querySelector(".message-info").innerHTML = `Enviando para ${document.querySelector(".participants-list .selected").children[1].innerHTML} (${document.querySelector(".visibility-list .selected").children[1].innerHTML})`
+    }
+}
+function selectVisibility (visibility) {
+    let alreadySelected = document.querySelector(".visibility-list .selected")
+    if (visibility !== alreadySelected) {
+        alreadySelected.classList.remove("selected")
+        alreadySelected.removeChild(alreadySelected.children[2])
+        visibility.classList.add("selected")
+        visibility.innerHTML += '<ion-icon name="checkmark" class="check"></ion-icon>'
+        document.querySelector(".message-info").innerHTML = `Enviando para ${document.querySelector(".participants-list .selected").children[1].innerHTML} (${document.querySelector(".visibility-list .selected").children[1].innerHTML})`
+    }
 }
