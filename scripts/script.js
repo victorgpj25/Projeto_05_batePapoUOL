@@ -1,5 +1,5 @@
 function login () {
-    var myUsername = document.querySelector(".my-username").value
+    window.myUsername = document.querySelector(".my-username").value
     const request = axios.post('https://mock-api.driven.com.br/api/v6/uol/participants', {name: document.querySelector(".my-username").value})
 
     request.then(loginSuccess)
@@ -10,6 +10,7 @@ function login () {
         function myStatus () {
             axios.post('https://mock-api.driven.com.br/api/v6/uol/status', {name: document.querySelector(".my-username").value})
         }
+        document.querySelector(".message-info").innerHTML = `Enviando para ${document.querySelector(".participants-list .selected").children[1].innerHTML} (${document.querySelector(".visibility-list .selected").children[1].innerHTML})`
         myStatus()
         setInterval(myStatus, 5000)
         loadMessages()
@@ -86,6 +87,23 @@ function loadMessages() {
     }
 }
 function sendMessage() {
+    if (document.querySelector(".visibility-list .selected").children[1].innerHTML === "Reservadamente" && document.querySelector(".participants-list .selected").children[1].innerHTML === "Todos") {
+        alert("Não é possível mandar mensagens reservadamente para todos os usuários")
+    } else {
+        let myMessage = {from: document.querySelector(".my-username").value, to: document.querySelector(".participants-list .selected").children[1].innerHTML, text: document.querySelector(".my-message").value, type: document.querySelector(".visibility-list .selected").id}
+        const messageSent = axios.post('https://mock-api.driven.com.br/api/v6/uol/messages', myMessage)
+
+        messageSent.then(messageOk)
+        messageSent.catch(messageFail)
+
+        function messageOk (messageInfo) {
+            loadMessages()
+        }
+        function messageFail (messageInfo) {
+            window.location.reload()
+        }
+    }
+    loadMessages()
 }
 function selectReceiver (receiver) {
     let alreadySelected = document.querySelector(".participants-list .selected")

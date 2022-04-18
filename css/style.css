@@ -115,9 +115,6 @@ section li {
 
     color: #28BB25;
 }
-.selected {
-    border: 1px solid red;
-}
 section ion-icon {
     font-size: 22px;
     padding-right: 2px;

@@ -31,12 +31,12 @@
         </ul>
         <p>Escolha a visibilidade:</p>
         <ul class="visibility-list">
-            <li class="selected" onclick="selectVisibility(this)">
+            <li id="message" class="selected" onclick="selectVisibility(this)">
                 <ion-icon name="lock-open"></ion-icon>
                 <p>Público</p>
                 <ion-icon name="checkmark" class="check"></ion-icon>
             </li>
-            <li onclick="selectVisibility(this)">
+            <li id="private_message" onclick="selectVisibility(this)">
                 <ion-icon name="lock-closed"></ion-icon>
                 <p>Reservadamente</p>
             </li>
@@ -49,7 +49,7 @@
     <main><ol></ol></main>
     <footer>
         <div class="input-box">
-            <input type="text" placeholder="Escreva aqui...">
+            <input type="text" placeholder="Escreva aqui..." class="my-message">
             <p class="message-info">Enviando para Maria (reservadamente)</p>
         </div>
         <ion-icon name="paper-plane-outline" onclick="sendMessage()"></ion-icon>
